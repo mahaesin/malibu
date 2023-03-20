@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        install_latest: [ true, false ]
+        install_latest: [ false ]
 
     steps:
       # Checkout push-to-registry action github repository
