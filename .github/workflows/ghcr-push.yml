@@ -2,11 +2,14 @@
 # This workflow will perform a test whenever there
 # is some change in code done to ensure that the changes
 # are not buggy and we are getting the desired output.
+#
+# Multi-arch build
+#
 name: Push to GHCR
 on:
   push:
     branches:
-      - "master"
+      - "container-ci-multarch"
 
 env:
     IMAGE_NAME: malibu
@@ -33,6 +36,10 @@ jobs:
         if: matrix.install_latest
         run: |
           bash .github/install_latest_podman.sh
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        
       # Build image using Buildah action
       - name: Build Image
         id: build_image
@@ -42,6 +49,8 @@ jobs:
           tags: ${{ env.IMAGE_TAGS }}
           context: .
           containerfiles: ./Dockerfile
+          # archs: amd64, ppc64le, s390x, arm64
+          archs: amd64, arm64
           oci: true
 
       # Push the image to GHCR (Image Registry)
