@@ -16,7 +16,7 @@ env:
     IMAGE_TAGS: latest ${{ github.sha }}
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
     REGISTRY_USER: ${{ github.actor }}
-    REGISTRY_PASSWORD: ${{ secrets.PAT_Container_Push }}
+    REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
   push-ghcr:
@@ -63,8 +63,8 @@ jobs:
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+          #extra-args: |
+          #  --disable-content-trust
       - name: Echo outputs
         run: |
           echo "${{ toJSON(steps.push.outputs) }}"
